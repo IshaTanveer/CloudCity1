@@ -1,16 +1,15 @@
 using UnityEngine;
 
-public class ArthurController : MonoBehaviour
+public class ArthurController : MonoBehaviour, Interactable
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private DialogManager dialogManager;
+    private void Awake()
     {
-        
+        dialogManager = FindAnyObjectByType<DialogManager>();
+    }
+    public void interact()
+    {
+         dialogManager.showDialog();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

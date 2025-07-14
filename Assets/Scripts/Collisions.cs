@@ -4,44 +4,34 @@ using UnityEditor.ShaderGraph;
 using UnityEngine;
 
 public class Collisions : MonoBehaviour {
-    private bool isTouchingArthur;
-    private bool isTouchingMerchant;
-    private Animator animator;
-    void Start() {
 
-    }
-    private void Awake() {
-        animator = GetComponent<Animator>();
-    }
+    public Interactable currentInteractable;
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Z)) {
-            interactWithArthur();
-            interactWithMerchant();
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            InteractWithCurrent();
         }
     }
-    private void interactWithArthur() {
-        if (isTouchingArthur) {
-                Debug.Log("Hi, Arthur");
-            }
+     private void InteractWithCurrent()
+    {
+        if (currentInteractable != null)
+        {
+            currentInteractable.interact();
+        }
+        else
+        {
+            Debug.Log("No interactable in range!");
+        }
     }
-    private void interactWithMerchant() {
-        if (isTouchingMerchant) {
-                Debug.Log("Hi, you guy got new goods?");
-            }
-    }
-    private void OnCollisionExit2D(Collision2D other) {
-        isTouchingArthur = false;
-        isTouchingMerchant = false;
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        currentInteractable = null;
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
-        if (other.gameObject.tag == "Arthur") {
-            isTouchingArthur = true;
-        }
-        else if (other.gameObject.tag == "Merchant") {
-            isTouchingMerchant = true;
-        }
-        else {
+        currentInteractable = other.gameObject.GetComponent<Interactable>();
+        if (currentInteractable == null)
+        {
             Debug.Log("Oops, I just hit the wall.");
         }
     }
